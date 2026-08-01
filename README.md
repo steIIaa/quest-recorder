@@ -21,7 +21,7 @@ a quest headset in dev dode connected over usb or adb over wifi (recommended)
 ## Setup
 
 ```bash
-git clone <this repo>
+git clone https://github.com/steIIaa/quest-recorder/
 cd quest-recorder
 ./install.sh
 ```
