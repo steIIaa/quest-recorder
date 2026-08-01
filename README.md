@@ -45,5 +45,5 @@ you don't need to do this unless you want to share the app with someone who does
 
 ## Notes
 
-* aspect ratio and fps settings depend on the headset's capture pipeline, so newer horizon OS versions might ignore some of them.
-* if your recordings aren't stored in `/sdcard/Oculus/VideoShots`, change `REMOTE_VIDEO_DIR` at the top of `quest_recorder.py`.
+aspect ratio and fps settings depend on the headset's capture pipeline, so newer horizon OS versions might ignore some of them.
+if your recordings aren't stored in `/sdcard/Oculus/VideoShots`, change `REMOTE_VIDEO_DIR` at the top of `quest_recorder.py`.
