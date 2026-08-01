@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Quest Recorder
+Comment=Grab Quest gameplay recordings over adb
+Exec=QuestRecorder
+Icon=quest-recorder
+Terminal=false
+Categories=Utility;AudioVideo;
