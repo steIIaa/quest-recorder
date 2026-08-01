@@ -16,6 +16,7 @@ recording still has to be started and stopped from the headset. Meta removed the
 
 ## Requirements
 
+**LINUX ONLY**
 Python 3 with Tkinter (`python3-tk` on debian/ubuntu, `tk` on arch, `python3-tkinter` on fedora)
 `adb` on your `PATH`
 a quest headset in dev dode connected over usb or adb over wifi (recommended)
