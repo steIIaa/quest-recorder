@@ -102,8 +102,37 @@ def install_shortcut():
     except Exception:
         pass  # not every distro has this, whatever
 
-
 class App:
+    def wait_for_file_to_finish(self, filepath):
+        """Wait until the Quest is done writing the video file."""
+        self.log(f'waiting for {filepath} to finish saving...')
+
+        previous_size = -1
+        unchanged_checks = 0
+
+        while unchanged_checks < 3:
+            _, output, _ = self.run_adb(
+                ['shell', 'stat', '-c', '%s', filepath]
+            )
+
+            try:
+                current_size = int(output.strip())
+            except ValueError:
+                current_size = 0
+
+            if current_size == previous_size:
+                unchanged_checks += 1
+            else:
+                unchanged_checks = 0
+
+            previous_size = current_size
+            time.sleep(2)
+
+        # allow MP4 metadata (moov atom) to finish writing
+        time.sleep(2)
+
+        self.log('video finished saving.')
+    
     def __init__(self, root):
         self.root = root
         self.watching = False
@@ -263,36 +292,14 @@ class App:
             return
 
         self.log(f'found it: {new_file}')
-        self.log('giving it a few seconds to finish writing before pulling...')
-        tremote_path = f'{VIDEO_FOLDER}/{new_file}'
-local_path = os.path.join(SAVE_DIR, new_file)
+        self.log('waiting for it to finish writing before pulling...')
 
-print("Waiting for recording to finish...")
+        remote_path = f'{VIDEO_FOLDER}/{new_file}'
+        local_path = os.path.join(SAVE_DIR, new_file)
 
-last_size = -1
-stable_count = 0
+        self.wait_for_file_to_finish(remote_path)
 
-while stable_count < 3:
-    code, out, _ = self.run_adb(
-        ['shell', 'stat', '-c', '%s', remote_path]
-    )
-
-    try:
-        size = int(out.strip())
-    except:
-        size = -1
-
-    if size == last_size:
-        stable_count += 1
-    else:
-        stable_count = 0
-
-    last_size = size
-    time.sleep(2)
-
-print("File finished, pulling...")
-
-code, _, err = self.run_adb(['pull', remote_path, local_path])
+        code, _, err = self.run_adb(['pull', remote_path, local_path])
         if code != 0:
             self.log(f'pull failed: {err}')
         else:
