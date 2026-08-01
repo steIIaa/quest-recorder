@@ -1,3 +1,4 @@
+<img width="800" height="800" alt="quest-record-icon" src="https://github.com/user-attachments/assets/ad1932dd-b9f1-4c5d-b948-c441e49e090c" />
 # Quest Recorder
 
 a small desktop app that pulls meta quest recordings onto your pc over `adb`.
