@@ -1,0 +1,16 @@
+# recordings you pull off the headset - these don't belong in git
+recordings/
+
+# python
+__pycache__/
+*.pyc
+
+# pyinstaller build output
+build/
+dist/
+*.spec
+
+# appimage build output
+*.AppDir/
+*.AppImage
+appimagetool.AppImage
