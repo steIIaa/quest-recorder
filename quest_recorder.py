@@ -264,14 +264,35 @@ class App:
 
         self.log(f'found it: {new_file}')
         self.log('giving it a few seconds to finish writing before pulling...')
-        time.sleep(5)
+        tremote_path = f'{VIDEO_FOLDER}/{new_file}'
+local_path = os.path.join(SAVE_DIR, new_file)
 
-        remote_path = f'{VIDEO_FOLDER}/{new_file}'
-        local_path = os.path.join(SAVE_DIR, new_file)
+print("Waiting for recording to finish...")
 
-        self.log('pulling to this pc...')
-        code, _, err = self.run_adb(['pull', remote_path, local_path])
+last_size = -1
+stable_count = 0
 
+while stable_count < 3:
+    code, out, _ = self.run_adb(
+        ['shell', 'stat', '-c', '%s', remote_path]
+    )
+
+    try:
+        size = int(out.strip())
+    except:
+        size = -1
+
+    if size == last_size:
+        stable_count += 1
+    else:
+        stable_count = 0
+
+    last_size = size
+    time.sleep(2)
+
+print("File finished, pulling...")
+
+code, _, err = self.run_adb(['pull', remote_path, local_path])
         if code != 0:
             self.log(f'pull failed: {err}')
         else:
